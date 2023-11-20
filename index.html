@@ -1,3 +1,4 @@
+User
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,9 +25,6 @@
             border: 2px solid #333;
             font-size: 2em;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         button {
@@ -116,14 +114,23 @@
         });
     };
 
-    // Function for AI to make a move using Minimax Algorithm
+    // Function for AI to make a move
     const makeAIMove = () => {
-        // Find the best move using Minimax
-        const bestMove = minimax(board, currentPlayer).index;
+        // Get empty cells
+        const emptyCells = board.reduce((acc, cell, index) => {
+            if (cell === '') {
+                acc.push(index);
+            }
+            return acc;
+        }, []);
+
+        // Randomly choose an empty cell
+        const randomIndex = Math.floor(Math.random() * emptyCells.length);
+        const aiMove = emptyCells[randomIndex];
 
         // Make the AI move after a short delay to make it more human-like
         setTimeout(() => {
-            board[bestMove] = currentPlayer;
+            board[aiMove] = currentPlayer;
             renderBoard();
 
             // Check for a win after AI's move
@@ -132,4 +139,26 @@
                 isGameOver = true;
             } else if (checkTie()) {
                 document.getElementById('message').textContent = 'It\'s a tie!';
-                isGameOver
+                isGameOver = true;
+            } else {
+                // Switch player
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
+        }, 500);
+    };
+
+    // Function to reset the game
+    const resetGame = () => {
+        currentPlayer = 'X';
+        isGameOver = false;
+        board = ['', '', '', '', '', '', '', '', ''];
+        document.getElementById('message').textContent = '';
+        renderBoard();
+    };
+
+    // Initialize the game
+    renderBoard();
+</script>
+
+</body>
+</html>
