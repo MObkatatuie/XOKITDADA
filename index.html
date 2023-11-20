@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* Add some basic styling for the game */
         body {
             display: grid;
             place-items: center;
-            height: 100vh; /* Set the body height to the viewport height */
+            height: 100vh;
             margin: 0;
+            font-family: 'Arial', sans-serif;
         }
 
         .board {
@@ -24,13 +24,14 @@
             border: 2px solid #333;
             font-size: 2em;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        button {
+        .message {
             margin-top: 20px;
-            padding: 10px;
-            font-size: 1em;
-            cursor: pointer;
+            font-size: 1.2em;
         }
     </style>
     <title>Tic-Tac-Toe</title>
@@ -38,10 +39,9 @@
 <body>
 
 <h1>Tic-Tac-Toe</h1>
-<div id="message"></div>
-<button onclick="resetGame()">Restart Game</button>
-<div class="board"></div>
-    
+<div id="message" class="message"></div>
+<div class="board" onclick="handleCellClick(event)"></div>
+
 <script src="your-script.js"></script>
 
 </body>
