@@ -58,6 +58,8 @@ const renderBoard = () => {
     });
 };
 
+// ... (โค้ดที่เหลือเป็นเหมือนเดิม)
+
 const makeAIMove = () => {
     const bestMove = minimax(board, 'O').index;
     board[bestMove] = 'O';
@@ -88,7 +90,7 @@ const minimax = (board, player) => {
     const moves = [];
     for (let i = 0; i < availableMoves.length; i++) {
         const move = {};
-        move.index = board[availableMoves[i]];
+        move.index = availableMoves[i]; // แก้ตรงนี้ให้เป็นตำแหน่งของเซลล์ที่ว่าง
         board[availableMoves[i]] = player;
 
         if (player === 'O') {
@@ -125,6 +127,7 @@ const minimax = (board, player) => {
     return moves[bestMove];
 };
 
+// ... (โค้ดที่เหลือเป็นเหมือนเดิม)
 
 const emptyCells = (board) => {
     return board.filter(cell => cell === '');
