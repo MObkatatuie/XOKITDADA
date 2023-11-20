@@ -22,7 +22,7 @@ By Kitsada made with vsc,chatGPT,github
         .cell {
             width: 100px;
             height: 100px;
-            border: 2px solid #333;
+            border: 2px solid #555;
             font-size: 2em;
             cursor: pointer;
         }
@@ -83,10 +83,10 @@ By Kitsada made with vsc,chatGPT,github
 
             // Check for a win
             if (checkWin()) {
-                document.getElementById('message').textContent = `${currentPlayer} wins!`;
+                document.getElementById('message').textContent = ` You Win !!`;
                 isGameOver = true;
             } else if (checkTie()) {
-                document.getElementById('message').textContent = 'It\'s a Draw!';
+                document.getElementById('message').textContent = 'It\'s Draw!';
                 isGameOver = true;
             } else {
                 // Switch player
@@ -138,7 +138,7 @@ By Kitsada made with vsc,chatGPT,github
                 document.getElementById('message').textContent = 'AI wins!';
                 isGameOver = true;
             } else if (checkTie()) {
-                document.getElementById('message').textContent = 'It\'s a tie!';
+                document.getElementById('message').textContent = 'It\'s Draw!!';
                 isGameOver = true;
             } else {
                 // Switch player
