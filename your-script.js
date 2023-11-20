@@ -1,9 +1,7 @@
-// Game variables
 let currentPlayer = 'X';
 let isGameOver = false;
 let board = ['', '', '', '', '', '', '', '', ''];
 
-// Function to check for a win
 const checkWin = () => {
     const winPatterns = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
@@ -21,21 +19,17 @@ const checkWin = () => {
     return false; // No winner yet
 };
 
-// Function to check for a tie
 const checkTie = () => {
     return board.every(cell => cell !== '');
 };
 
-// Function to handle cell click
 const handleCellClick = (event) => {
     const cellIndex = event.target.dataset.index;
 
-    // Check if the cell is empty and the game is not over
     if (board[cellIndex] === '' && !isGameOver) {
         board[cellIndex] = currentPlayer;
         renderBoard();
 
-        // Check for a win
         if (checkWin()) {
             document.getElementById('message').textContent = `${currentPlayer} wins!`;
             isGameOver = true;
@@ -43,10 +37,7 @@ const handleCellClick = (event) => {
             document.getElementById('message').textContent = 'It\'s a tie!';
             isGameOver = true;
         } else {
-            // Switch player
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-
-            // If the next move is AI's, make the move
             if (currentPlayer === 'O' && !isGameOver) {
                 makeAIMove();
             }
@@ -54,7 +45,6 @@ const handleCellClick = (event) => {
     }
 };
 
-// Function to render the game board
 const renderBoard = () => {
     const boardElement = document.querySelector('.board');
     boardElement.innerHTML = '';
@@ -68,59 +58,75 @@ const renderBoard = () => {
     });
 };
 
-// Function for AI to make a move
 const makeAIMove = () => {
-    // Get empty cells
-    const emptyCells = board.reduce((acc, cell, index) => {
-        if (cell === '') {
-            acc.push(index);
-        }
-        return acc;
-    }, []);
-
-    // Randomly choose an empty cell
-    const randomIndex = Math.floor(Math.random() * emptyCells.length);
-    const aiMove = emptyCells[randomIndex];
-
-    // Make the AI move after a short delay to make it more human-like
-    setTimeout(() => {
-        board[aiMove] = currentPlayer;
-        renderBoard();
-
-        // Check for a win after AI's move
-        if (checkWin()) {
-            document.getElementById('message').textContent = 'AI wins!';
-            isGameOver = true;
-        } else if (checkTie()) {
-            document.getElementById('message').textContent = 'It\'s a tie!';
-            isGameOver = true;
-        } else {
-            // Switch player
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        }
-    }, 500);
-};
-
-// Function to reset the game
-const resetGame = () => {
-    currentPlayer = 'X';
-    isGameOver = false;
-    board = ['', '', '', '', '', '', '', '', ''];
-    document.getElementById('message').textContent = '';
+    const bestMove = minimax(board, 'O').index;
+    board[bestMove] = 'O';
     renderBoard();
+
+    if (checkWin()) {
+        document.getElementById('message').textContent = 'AI wins!';
+        isGameOver = true;
+    } else if (checkTie()) {
+        document.getElementById('message').textContent = 'It\'s a tie!';
+        isGameOver = true;
+    } else {
+        currentPlayer = 'X';
+    }
 };
 
-// Function to initialize the game
-const initGame = () => {
-    const boardElement = document.querySelector('.board');
+const minimax = (board, player) => {
+    const availableMoves = emptyCells(board);
 
-    // Add event listener to each cell
-    boardElement.addEventListener('click', (event) => {
-        if (event.target.classList.contains('cell')) {
-            handleCellClick(event);
+    if (checkWin(board, 'X')) {
+        return { score: -1 };
+    } else if (checkWin(board, 'O')) {
+        return { score: 1 };
+    } else if (availableMoves.length === 0) {
+        return { score: 0 };
+    }
+
+    const moves = [];
+    for (let i = 0; i < availableMoves.length; i++) {
+        const move = {};
+        move.index = board[availableMoves[i]];
+        board[availableMoves[i]] = player;
+
+        if (player === 'O') {
+            const result = minimax(board, 'X');
+            move.score = result.score;
+        } else {
+            const result = minimax(board, 'O');
+            move.score = result.score;
         }
-    });
+
+        board[availableMoves[i]] = '';
+        moves.push(move);
+    }
+
+    let bestMove;
+    if (player === 'O') {
+        let bestScore = -Infinity;
+        for (let i = 0; i < moves.length; i++) {
+            if (moves[i].score > bestScore) {
+                bestScore = moves[i].score;
+                bestMove = i;
+            }
+        }
+    } else {
+        let bestScore = Infinity;
+        for (let i = 0; i < moves.length; i++) {
+            if (moves[i].score < bestScore) {
+                bestScore = moves[i].score;
+                bestMove = i;
+            }
+        }
+    }
+
+    return moves[bestMove];
 };
 
-// Initialize the game
-initGame();
+const emptyCells = (board) => {
+    return board.filter(cell => cell === '');
+};
+
+renderBoard();
