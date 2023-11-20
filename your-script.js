@@ -125,6 +125,7 @@ const minimax = (board, player) => {
     return moves[bestMove];
 };
 
+
 const emptyCells = (board) => {
     return board.filter(cell => cell === '');
 };
@@ -137,4 +138,20 @@ const resetGame = () => {
     renderBoard();
 };
 
-renderBoard();
+const initGame = () => {
+    const boardElement = document.querySelector('.board');
+
+    // Add event listener to each cell
+    boardElement.addEventListener('click', (event) => {
+        if (event.target.classList.contains('cell')) {
+            handleCellClick(event);
+        }
+    });
+
+    // Add event listener to the reset button
+    const resetButton = document.getElementById('resetButton');
+    resetButton.addEventListener('click', resetGame);
+};
+
+// Initialize the game
+initGame();
