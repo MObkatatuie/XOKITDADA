@@ -34,7 +34,7 @@ By Kitsada made with vsc,chatGPT,github
             cursor: pointer;
         }
     </style>
-    <title>Tic-Tac-Toe</title>
+    <title>Tic-Tac-Toe (Very easy , Try to lose if you're clever.)</title>
 </head>
 <body>
 
@@ -135,7 +135,7 @@ By Kitsada made with vsc,chatGPT,github
 
             // Check for a win after AI's move
             if (checkWin()) {
-                document.getElementById('message').textContent = 'AI wins!';
+                document.getElementById('message').textContent = 'You lose!! ในที่สุดAIผม ก็ชนะคุณได้ !';
                 isGameOver = true;
             } else if (checkTie()) {
                 document.getElementById('message').textContent = 'It\'s Draw!!';
