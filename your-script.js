@@ -125,8 +125,3 @@ const minimax = (board, player) => {
     return moves[bestMove];
 };
 
-const emptyCells = (board) => {
-    return board.filter(cell => cell === '');
-};
-
-renderBoard();
