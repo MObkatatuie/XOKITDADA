@@ -34,11 +34,12 @@ By Kitsada made with vsc,chatGPT,github
             cursor: pointer;
         }
     </style>
-    <title>Tic-Tac-Toe (Very easy , Try to lose if you're clever.)</title>
+    <title>Tic-Tac-Toe by me</title>
 </head>
 <body>
 
 <h1>Tic-Tac-Toe</h1>
+<p>(This game is very easy,Try to lose if you want to be harder)</p>
 <div id="message"></div>
 <div class="board" onclick="handleCellClick(event)"></div>
 <button onclick="resetGame()">Restart Game</button>
@@ -135,7 +136,7 @@ By Kitsada made with vsc,chatGPT,github
 
             // Check for a win after AI's move
             if (checkWin()) {
-                document.getElementById('message').textContent = 'You lose!! ในที่สุดAIผม ก็ชนะคุณได้ !';
+                document.getElementById('message').textContent = 'You lose!! ในที่สุดAIผม ก็ชนะคุณ !';
                 isGameOver = true;
             } else if (checkTie()) {
                 document.getElementById('message').textContent = 'It\'s Draw!!';
