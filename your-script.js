@@ -46,3 +46,23 @@ const makeMove = (index) => {
     renderBoard();
     checkGameStatus();
 };
+
+// ...
+
+// Function to initialize the game
+const initGame = () => {
+    const boardElement = document.querySelector('.board');
+
+    // Add event listener to each cell
+    boardElement.addEventListener('click', (event) => {
+        if (event.target.classList.contains('cell')) {
+            handleCellClick(event);
+        }
+    });
+};
+
+// Initialize the game
+initGame();
+
+// ...
+
