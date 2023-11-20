@@ -12,6 +12,12 @@
             font-family: 'Arial', sans-serif;
         }
 
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .board {
             display: grid;
             grid-template-columns: repeat(3, 100px);
@@ -33,14 +39,24 @@
             margin-top: 20px;
             font-size: 1.2em;
         }
+
+        .reset-button {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 1em;
+            cursor: pointer;
+        }
     </style>
     <title>Tic-Tac-Toe</title>
 </head>
 <body>
 
-<h1>Tic-Tac-Toe</h1>
-<div id="message" class="message"></div>
-<div class="board" onclick="handleCellClick(event)"></div>
+<div class="game-container">
+    <h1>Tic-Tac-Toe</h1>
+    <div id="message" class="message"></div>
+    <div class="board" onclick="handleCellClick(event)"></div>
+    <button class="reset-button" onclick="resetGame()">Restart Game</button>
+</div>
 
 <script src="your-script.js"></script>
 
