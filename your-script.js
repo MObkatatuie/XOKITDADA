@@ -125,3 +125,16 @@ const minimax = (board, player) => {
     return moves[bestMove];
 };
 
+const emptyCells = (board) => {
+    return board.filter(cell => cell === '');
+};
+
+const resetGame = () => {
+    currentPlayer = 'X';
+    isGameOver = false;
+    board = ['', '', '', '', '', '', '', '', ''];
+    document.getElementById('message').textContent = '';
+    renderBoard();
+};
+
+renderBoard();
