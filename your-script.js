@@ -1,97 +1,52 @@
-let currentPlayer = 'X';
-let isGameOver = false;
-let board = ['', '', '', '', '', '', '', '', ''];
+// Function for AI to make a move using Minimax Algorithm
+const makeAIMove = () => {
+    // Find the best move using Minimax
+    const bestMove = minimax(board, currentPlayer).index;
 
-const checkWin = () => {
-    const winPatterns = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-        [0, 4, 8], [2, 4, 6]             // Diagonals
-    ];
-
-    for (let pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-            return true; // We have a winner
-        }
-    }
-
-    return false; // No winner yet
-};
-
-const checkTie = () => {
-    return board.every(cell => cell !== '');
-};
-
-const handleCellClick = (event) => {
-    const cellIndex = event.target.dataset.index;
-
-    if (board[cellIndex] === '' && !isGameOver) {
-        board[cellIndex] = currentPlayer;
+    // Make the AI move after a short delay to make it more human-like
+    setTimeout(() => {
+        board[bestMove] = currentPlayer;
         renderBoard();
 
+        // Check for a win after AI's move
         if (checkWin()) {
-            document.getElementById('message').textContent = `${currentPlayer} wins!`;
+            document.getElementById('message').textContent = 'AI wins!';
             isGameOver = true;
         } else if (checkTie()) {
             document.getElementById('message').textContent = 'It\'s a tie!';
             isGameOver = true;
         } else {
+            // Switch player
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            if (currentPlayer === 'O' && !isGameOver) {
-                makeAIMove();
-            }
         }
-    }
+    }, 500);
 };
 
-const renderBoard = () => {
-    const boardElement = document.querySelector('.board');
-    boardElement.innerHTML = '';
-
-    board.forEach((cell, index) => {
-        const cellElement = document.createElement('div');
-        cellElement.classList.add('cell');
-        cellElement.textContent = cell;
-        cellElement.dataset.index = index;
-        boardElement.appendChild(cellElement);
-    });
-};
-
-// ... (โค้ดที่เหลือเป็นเหมือนเดิม)
-
-const makeAIMove = () => {
-    const bestMove = minimax(board, 'O').index;
-    board[bestMove] = 'O';
-    renderBoard();
-
-    if (checkWin()) {
-        document.getElementById('message').textContent = 'AI wins!';
-        isGameOver = true;
-    } else if (checkTie()) {
-        document.getElementById('message').textContent = 'It\'s a tie!';
-        isGameOver = true;
-    } else {
-        currentPlayer = 'X';
-    }
-};
-
+// Minimax Algorithm
 const minimax = (board, player) => {
-    const availableMoves = emptyCells(board);
+    // Get empty cells
+    const emptyCells = board.reduce((acc, cell, index) => {
+        if (cell === '') {
+            acc.push(index);
+        }
+        return acc;
+    }, []);
 
-    if (checkWin(board, 'X')) {
+    // Check terminal states (win, lose, tie)
+    if (checkWin()) {
         return { score: -1 };
-    } else if (checkWin(board, 'O')) {
+    } else if (checkWin('O')) {
         return { score: 1 };
-    } else if (availableMoves.length === 0) {
+    } else if (emptyCells.length === 0) {
         return { score: 0 };
     }
 
+    // Collect all possible moves and their scores
     const moves = [];
-    for (let i = 0; i < availableMoves.length; i++) {
+    for (let i = 0; i < emptyCells.length; i++) {
         const move = {};
-        move.index = availableMoves[i]; // แก้ตรงนี้ให้เป็นตำแหน่งของเซลล์ที่ว่าง
-        board[availableMoves[i]] = player;
+        move.index = emptyCells[i];
+        board[emptyCells[i]] = player;
 
         if (player === 'O') {
             const result = minimax(board, 'X');
@@ -101,10 +56,12 @@ const minimax = (board, player) => {
             move.score = result.score;
         }
 
-        board[availableMoves[i]] = '';
+        // Reset the board after trying a move
+        board[emptyCells[i]] = '';
         moves.push(move);
     }
 
+    // Choose the best move
     let bestMove;
     if (player === 'O') {
         let bestScore = -Infinity;
@@ -124,37 +81,6 @@ const minimax = (board, player) => {
         }
     }
 
+    // Return the chosen move and its score
     return moves[bestMove];
 };
-
-// ... (โค้ดที่เหลือเป็นเหมือนเดิม)
-
-const emptyCells = (board) => {
-    return board.filter(cell => cell === '');
-};
-
-const resetGame = () => {
-    currentPlayer = 'X';
-    isGameOver = false;
-    board = ['', '', '', '', '', '', '', '', ''];
-    document.getElementById('message').textContent = '';
-    renderBoard();
-};
-
-const initGame = () => {
-    const boardElement = document.querySelector('.board');
-
-    // Add event listener to each cell
-    boardElement.addEventListener('click', (event) => {
-        if (event.target.classList.contains('cell')) {
-            handleCellClick(event);
-        }
-    });
-
-    // Add event listener to the reset button
-    const resetButton = document.getElementById('resetButton');
-    resetButton.addEventListener('click', resetGame);
-};
-
-// Initialize the game
-initGame();
